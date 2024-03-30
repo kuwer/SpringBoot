@@ -1,12 +1,18 @@
 package com.example.restfulwebservices.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+@Entity(name = "user_table")
 public class User {
+    @Id
+    @GeneratedValue
     private Integer id;
     @JsonProperty("user_name")
     @Size(min = 2, message = "Enter Valid name with more than 2 characters")
