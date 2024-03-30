@@ -1,5 +1,6 @@
 package com.example.restfulwebservices.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
@@ -7,9 +8,11 @@ import java.time.LocalDate;
 
 public class User {
     private Integer id;
+    @JsonProperty("user_name")
     @Size(min = 2, message = "Enter Valid name with more than 2 characters")
     private String name;
 
+    @JsonProperty("birth_date")
     @Past(message = "Enter valid dob")
     private LocalDate birthdate;
 
