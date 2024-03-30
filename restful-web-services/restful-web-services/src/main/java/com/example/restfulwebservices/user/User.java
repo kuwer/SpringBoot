@@ -11,14 +11,18 @@ import java.time.LocalDate;
 
 @Entity(name = "user_table")
 public class User {
+
+    protected User(){
+
+    }
     @Id
     @GeneratedValue
     private Integer id;
-    @JsonProperty("user_name")
+    //@JsonProperty("user_name")
     @Size(min = 2, message = "Enter Valid name with more than 2 characters")
     private String name;
 
-    @JsonProperty("birth_date")
+    //@JsonProperty("birth_date")
     @Past(message = "Enter valid dob")
     private LocalDate birthdate;
 
