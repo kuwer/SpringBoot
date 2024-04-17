@@ -1,12 +1,19 @@
 import { useEffect } from "react"
 import { useState } from "react"
 import { deleteTodoApi, retrieveAllTodosForUsernameApi } from "./api/TodoApiService"
+import { useAuth } from "./security/AuthContext"
+import { useNavigate } from 'react-router-dom'
 
 export default function ListTodoComponent(){
 
-    const today = new Date()
+    const authContext = useAuth()
+    const username = authContext.username
 
-    const targetDate = new Date(today.getFullYear()+12, today.getMonth(), today.getMonth())
+    const navigate = useNavigate()
+
+    // const today = new Date()
+
+    // const targetDate = new Date(today.getFullYear()+12, today.getMonth(), today.getMonth())
 
     const [todos, setTodos] = useState([])
 
@@ -24,7 +31,7 @@ export default function ListTodoComponent(){
     )
 
     function refreshTodos(){
-        retrieveAllTodosForUsernameApi('kuwer')
+        retrieveAllTodosForUsernameApi(username)
         .then(response => {
             setTodos(response.data)
         })
@@ -33,7 +40,7 @@ export default function ListTodoComponent(){
 
     function deleteTodo(id){
         console.log('clicked' + id)
-        deleteTodoApi('kuwer', id)
+        deleteTodoApi(username, id)
         .then(
             () => {
                 setMessage(`Delete of todo with ${id} successful`)
@@ -41,6 +48,17 @@ export default function ListTodoComponent(){
             }
         )
         .catch(error => console.log(error))
+    }
+
+    function updateTodo(id){
+        console.log('clicked' + id)
+        navigate(`/todo/${id}`)
+        
+    }
+
+    function addNewTodo(){
+        navigate(`/todo/-1`)
+        
     }
 
     return (
@@ -55,6 +73,7 @@ export default function ListTodoComponent(){
                             <th>Is Done?</th>
                             <th>Target Date</th>
                             <th>Delete</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,6 +87,8 @@ export default function ListTodoComponent(){
                                         <td>{todo.targetDate.toString()}</td>
                                         <td><button className="btn btn-warning" 
                                         onClick={() => deleteTodo(todo.id)}>Delete</button></td>
+                                        <td><button className="btn btn-success" 
+                                        onClick={() => updateTodo(todo.id)}>Update</button></td>
                                     </tr>
                                 )
                             )
@@ -75,6 +96,7 @@ export default function ListTodoComponent(){
                     </tbody>
                 </table>
             </div>
+            <div className="btn btn-success m-5" onClick={addNewTodo}>Add new todo</div>
         </div>
     )
 }
